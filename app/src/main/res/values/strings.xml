@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Draw</string>
+    <string name="action_undo">Undo</string>
+    <string name="action_redo">Redo</string>
     <string-array name="tools">
         <item>Brush</item>
         <item>Line</item>

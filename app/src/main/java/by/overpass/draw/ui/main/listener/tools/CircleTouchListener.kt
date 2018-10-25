@@ -1,4 +1,4 @@
-package by.overpass.draw.ui.main.listener
+package by.overpass.draw.ui.main.listener.tools
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -6,33 +6,27 @@ import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.view.MotionEvent
 import android.view.View
-import com.divyanshu.draw.widget.DrawView
+import by.overpass.draw.CanvasStateHelper
+import by.overpass.draw.ui.main.widget.CanvasView
+import by.overpass.draw.util.calculateDistance
 
-/**
- * Created by Alex.S on 10/25/2018.
- */
-class CircleTouchListener(private val canvas: DrawView) : View.OnTouchListener {
-
-    private var initX: Float? = null
-    private var initY: Float? = null
-    private var endX: Float? = null
-    private var endY: Float? = null
+class CircleTouchListener(canvas: CanvasView) : BaseToolTouchListener(canvas) {
 
     override fun onTouch(view: View?, event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                initX = event.x
-                initY = event.y
+                startX = event.x
+                startY = event.y
             }
             MotionEvent.ACTION_MOVE -> {
                 endX = event.x
                 endY = event.y
-                attemptToDrawCircle()
+                attemptToDrawCircle(false)
             }
             MotionEvent.ACTION_UP -> {
                 endX = event.x
                 endY = event.y
-                attemptToDrawCircle()
+                attemptToDrawCircle(true)
                 clearCoordinates()
             }
         }
@@ -52,18 +46,14 @@ class CircleTouchListener(private val canvas: DrawView) : View.OnTouchListener {
         canvas.background = BitmapDrawable(canvas.resources, mutableBitmap)
     }
 
-    private fun attemptToDrawCircle() {
-        if (initX != null && initY != null && endX != null && endY != null) {
-            val radius = Math.sqrt(Math.pow((endX!! - initX!!).toDouble(), 2.0) + Math.pow((endY!! - initY!!).toDouble(), 2.0)).toFloat()
-            drawCircle(initX!!, initY!!, radius)
+    private fun attemptToDrawCircle(shouldSaveState: Boolean) {
+        if (startX != null && startY != null && endX != null && endY != null) {
+            val radius = calculateDistance(startX!!, startY!!, endX!!, endY!!)
+            drawCircle(startX!!, startY!!, radius)
+            if (shouldSaveState) {
+                CanvasStateHelper.getInstance().addNewState(canvas)
+            }
         }
-    }
-
-    private fun clearCoordinates() {
-        initX = null
-        initY = null
-        endX = null
-        endY = null
     }
 
 }
