@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Draw</string>
+    <string-array name="tools">
+        <item>Brush</item>
+        <item>Line</item>
+        <item>Circle</item>
+        <item>Square</item>
+        <item>Rectangle</item>
+        <item>Oval</item>
+    </string-array>
+</resources>
