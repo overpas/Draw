@@ -1,12 +1,11 @@
 package by.overpass.draw.ui.main.listener.tools
 
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.view.MotionEvent
 import android.view.View
-import by.overpass.draw.CanvasStateHelper
+import by.overpass.draw.model.draw.CanvasStateHelper
+import by.overpass.draw.model.draw.PaintHelper
 import by.overpass.draw.ui.main.widget.CanvasView
 import by.overpass.draw.util.calculateDistance
 
@@ -18,11 +17,11 @@ class CircleTouchListener(canvas: CanvasView) : BaseToolTouchListener(canvas) {
                 startX = event.x
                 startY = event.y
             }
-            MotionEvent.ACTION_MOVE -> {
+            /*MotionEvent.ACTION_MOVE -> {
                 endX = event.x
                 endY = event.y
                 attemptToDrawCircle(false)
-            }
+            }*/
             MotionEvent.ACTION_UP -> {
                 endX = event.x
                 endY = event.y
@@ -37,10 +36,7 @@ class CircleTouchListener(canvas: CanvasView) : BaseToolTouchListener(canvas) {
         val bitmap = canvas.getBitmap()
         val mutableBitmap = bitmap.copy(bitmap.config, true)
         Canvas(mutableBitmap).apply {
-            val paint = Paint().apply {
-                style = Paint.Style.FILL
-                color = Color.BLACK
-            }
+            val paint = PaintHelper.getInstance().paint
             drawCircle(centerX, centerY, radius, paint)
         }
         canvas.background = BitmapDrawable(canvas.resources, mutableBitmap)

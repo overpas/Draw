@@ -1,12 +1,11 @@
 package by.overpass.draw.ui.main.listener.tools
 
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.view.MotionEvent
 import android.view.View
-import by.overpass.draw.CanvasStateHelper
+import by.overpass.draw.model.draw.CanvasStateHelper
+import by.overpass.draw.model.draw.PaintHelper
 import by.overpass.draw.ui.main.widget.CanvasView
 
 class LineTouchListener(canvas: CanvasView) : BaseToolTouchListener(canvas) {
@@ -31,10 +30,7 @@ class LineTouchListener(canvas: CanvasView) : BaseToolTouchListener(canvas) {
         val bitmap = canvas.getBitmap()
         val mutableBitmap = bitmap.copy(bitmap.config, true)
         Canvas(mutableBitmap).apply {
-            val paint = Paint().apply {
-                style = Paint.Style.FILL
-                color = Color.BLACK
-            }
+            val paint = PaintHelper.getInstance().paint
             drawLine(startX, startY, endX, endY, paint)
         }
         canvas.background = BitmapDrawable(canvas.resources, mutableBitmap)

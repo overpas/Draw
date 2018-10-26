@@ -2,6 +2,10 @@
     <string name="app_name">Draw</string>
     <string name="action_undo">Undo</string>
     <string name="action_redo">Redo</string>
+    <string name="action_open">Open</string>
+    <string name="action_save">Save</string>
+    <string name="fill">Fill</string>
+    <string name="action_erase">Erase</string>
     <string-array name="tools">
         <item>Brush</item>
         <item>Line</item>
@@ -9,5 +13,10 @@
         <item>Square</item>
         <item>Rectangle</item>
         <item>Oval</item>
+        <item>Fill</item>
+    </string-array>
+    <string-array name="image_sources">
+        <item>From Camera</item>
+        <item>From Gallery</item>
     </string-array>
 </resources>

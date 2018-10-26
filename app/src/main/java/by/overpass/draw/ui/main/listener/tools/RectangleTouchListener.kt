@@ -7,10 +7,11 @@ import android.view.View
 import by.overpass.draw.model.draw.CanvasStateHelper
 import by.overpass.draw.model.draw.PaintHelper
 import by.overpass.draw.ui.main.widget.CanvasView
-import kotlin.math.min
 
-class SquareTouchListener(canvas: CanvasView) : BaseToolTouchListener(canvas) {
-
+/**
+ * Created by Alex.S on 10/26/2018.
+ */
+class RectangleTouchListener(canvas: CanvasView) : BaseToolTouchListener(canvas) {
 
     override fun onTouch(view: View?, event: MotionEvent): Boolean {
         when (event.action) {
@@ -21,42 +22,31 @@ class SquareTouchListener(canvas: CanvasView) : BaseToolTouchListener(canvas) {
             /*MotionEvent.ACTION_MOVE -> {
                 endX = event.x
                 endY = event.y
-                attemptToDrawSquare(false)
+                attemptToDrawRectangle(false)
             }*/
             MotionEvent.ACTION_UP -> {
                 endX = event.x
                 endY = event.y
-                attemptToDrawSquare(true)
+                attemptToDrawRectangle(true)
                 clearCoordinates()
             }
         }
         return true
     }
 
-    private fun drawSquare(startX: Float, startY: Float, sideLength: Float) {
+    private fun drawRectangle(startX: Float, startY: Float, endX: Float, endY: Float) {
         val bitmap = canvas.getBitmap()
         val mutableBitmap = bitmap.copy(bitmap.config, true)
         Canvas(mutableBitmap).apply {
             val paint = PaintHelper.getInstance().paint
-            drawRect(startX, startY, startX + sideLength, startY + sideLength, paint)
+            drawRect(startX, startY, endX, endY, paint)
         }
         canvas.background = BitmapDrawable(canvas.resources, mutableBitmap)
     }
 
-    private fun attemptToDrawSquare(shouldSaveState: Boolean) {
+    private fun attemptToDrawRectangle(shouldSaveState: Boolean) {
         if (startX != null && startY != null && endX != null && endY != null) {
-            val offsetX = Math.abs(endX!! - startX!!)
-            val offsetY = Math.abs(endY!! - startY!!)
-            val sideLength = min(offsetX, offsetY)
-            if (startX!! < endX!! && startY!! < endY!!) {
-                drawSquare(startX!!, startY!!, sideLength)
-            } else if (startX!! < endX!! && startY!! > endY!!) {
-                drawSquare(startX!!, endY!!, sideLength)
-            } else if (startX!! > endX!! && startY!! < endY!!) {
-                drawSquare(endX!!, startY!!, sideLength)
-            } else {
-                drawSquare(endX!!, endY!!, sideLength)
-            }
+            drawRectangle(startX!!, startY!!, endX!!, endY!!)
             if (shouldSaveState) {
                 CanvasStateHelper.getInstance().addNewState(canvas)
             }

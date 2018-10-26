@@ -1,7 +1,7 @@
 package by.overpass.draw.ui.main.listener.tools
 
-import android.support.annotation.CallSuper
 import android.view.View
+import androidx.annotation.CallSuper
 import by.overpass.draw.ui.main.widget.CanvasView
 
 abstract class BaseToolTouchListener(protected val canvas: CanvasView) : View.OnTouchListener {

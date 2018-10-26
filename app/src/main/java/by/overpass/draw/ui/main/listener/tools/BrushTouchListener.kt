@@ -1,12 +1,12 @@
 package by.overpass.draw.ui.main.listener.tools
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.view.MotionEvent
 import android.view.View
-import by.overpass.draw.CanvasStateHelper
+import by.overpass.draw.model.draw.CanvasStateHelper
+import by.overpass.draw.model.draw.PaintHelper
 import by.overpass.draw.ui.main.widget.CanvasView
 
 class BrushTouchListener(canvas: CanvasView) : BaseToolTouchListener(canvas) {
@@ -37,10 +37,8 @@ class BrushTouchListener(canvas: CanvasView) : BaseToolTouchListener(canvas) {
         val bitmap = canvas.getBitmap()
         val mutableBitmap = bitmap.copy(bitmap.config, true)
         Canvas(mutableBitmap).apply {
-            val paint = Paint().apply {
-                style = Paint.Style.FILL
-                color = Color.BLACK
-            }
+            val paint = PaintHelper.getInstance().paint
+            paint.style = Paint.Style.FILL
             drawCircle(currentX, currentY, radius, paint)
         }
         canvas.background = BitmapDrawable(canvas.resources, mutableBitmap)
@@ -65,11 +63,8 @@ class BrushTouchListener(canvas: CanvasView) : BaseToolTouchListener(canvas) {
         val bitmap = canvas.getBitmap()
         val mutableBitmap = bitmap.copy(bitmap.config, true)
         Canvas(mutableBitmap).apply {
-            val paint = Paint().apply {
-                style = Paint.Style.FILL
-                color = Color.BLACK
-                strokeWidth = 4F
-            }
+            val paint = PaintHelper.getInstance().paint
+            paint.strokeWidth = 4F
             drawLine(currentX, currentY, nextX, nextY, paint)
         }
         canvas.background = BitmapDrawable(canvas.resources, mutableBitmap)

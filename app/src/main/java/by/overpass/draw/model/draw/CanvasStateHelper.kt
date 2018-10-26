@@ -1,4 +1,4 @@
-package by.overpass.draw
+package by.overpass.draw.model.draw
 
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -11,8 +11,16 @@ class CanvasStateHelper private constructor() {
         private set
 
     fun addNewState(canvas: CanvasView) {
-        bitmaps.add(canvas.getBitmap())
-        current++
+        if (current == -1) {
+            bitmaps.add(canvas.getBitmap())
+            current++
+        } else {
+            bitmaps.add(++current, canvas.getBitmap())
+            val size = bitmaps.size
+            for (i in current + 1 until size) {
+                bitmaps.removeAt(bitmaps.lastIndex)
+            }
+        }
     }
 
     fun undo(canvas: CanvasView) {
@@ -30,8 +38,10 @@ class CanvasStateHelper private constructor() {
     companion object {
         private var instance: CanvasStateHelper? = null
 
-        fun getInstance(): CanvasStateHelper = instance ?: synchronized(this) {
-            instance ?: CanvasStateHelper().also {
+        fun getInstance(): CanvasStateHelper = instance
+                ?: synchronized(this) {
+            instance
+                    ?: CanvasStateHelper().also {
                 instance = it
             }
         }
